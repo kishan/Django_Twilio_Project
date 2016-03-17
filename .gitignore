@@ -1,2 +1,4 @@
 
 *.pyc
+*dev_only.py
+*.pyc

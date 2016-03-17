@@ -15,12 +15,17 @@ import os
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/1.9/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
 SECRET_KEY = '0m6d8q&*-5w#s9f%^+5hzlj^(@l-rdwb8-!m9wsoshn)3)h9ng'
+
+try:
+    from env_variables_dev_only import TWILIO_ACCOUNT_SID, TWILIO_AUTH_TOKEN
+except:
+    TWILIO_ACCOUNT_SID=""
+    TWILIO_AUTH_TOKEN=""
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
