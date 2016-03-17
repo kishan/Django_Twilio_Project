@@ -20,6 +20,22 @@ def sms(request):
     body = request.POST.get('Body', '')
     body = body.lower()
 
+    if "call me" in body:
+
+        client = TwilioRestClient(settings.TWILIO_ACCOUNT_SID, settings.TWILIO_AUTH_TOKEN) 
+    
+        call = client.calls.create(
+            to="978-382-3789",
+            from_="19782917626",
+            url="http://twimlets.com/holdmusic?Bucket=com.twilio.music.ambient")
+            # monkey mp3 below doesn't work for some reason -> Application error
+            # https://demo.twilio.com/hellomonkey/monkey.mp3
+
+
+        msg = "I'll call you in a sec......"
+        r = Response()
+        r.message(msg)
+        return r
 
 
     msg = 'How are you today? This is what you sent me: %s' % (body)
