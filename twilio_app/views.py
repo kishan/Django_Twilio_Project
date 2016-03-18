@@ -11,6 +11,10 @@ from twilio.twiml import Response
 # for making a call
 from twilio.rest import TwilioRestClient
 
+# strip out the Twilio-specific POST parameters from a Django HttpRequest 
+#   object and present them back as a TwilioRequest object
+from django_twilio.request import decompose
+
 
 @twilio_view
 def sms(request):
@@ -59,7 +63,7 @@ def gather_digits(request):
     msg = 'Press one to hear a song, two to receive an SMS.'
 
     twilio_response = Response()
-    with twilio_response.gather(action='/respond/', numDigits=1) as g:
+    with twilio_response.gather(action='/respond_digits/', numDigits=1) as g:
         g.say(msg)
         g.pause(length=3)
         g.say(msg)
@@ -68,15 +72,18 @@ def gather_digits(request):
 
 # take appropriate action depending on what number user dialed
 @twilio_view
-def handle_response(request):
+def handle_response_digits(request):
  
-    digits = request.POST.get('Digits', '')
+    twilio_request = decompose(request)
+    digits = twilio_request.digits
+    # digits = request.POST.get('Digits', '')
+
     twilio_response = Response()
  
     if digits == '2':
         # twilio_response.play('http://bit.ly/phaltsw')
         number = request.POST.get('From', '')
-        twilio_response.say('A text message is on its way. Daaaaaaaaaaaaaaamn Daniel!')
+        twilio_response.say('A text message is on its way. Daaaaaaaaaaaaaaamn Daniel! Peace out yo')
         twilio_response.sms('Daaaaaaaaaaaaaaamn Daniel!', to=number)
  
     if digits == '1':

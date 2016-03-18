@@ -10,7 +10,7 @@ urlpatterns = [
     url(r'^ring', views.ring, name='ring'),
 
     url(r'^gather', views.gather_digits, name='gather'),
-    url(r'^respond', views.handle_response, name='respond'),
+    url(r'^respond_digits', views.handle_response_digits, name='respond_digits'),
 
 ]
 
