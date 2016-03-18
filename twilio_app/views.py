@@ -1,4 +1,5 @@
 from django.shortcuts import render
+from django.shortcuts import redirect
 # import settings to access Twilio keys
 from django.conf import settings
 
@@ -76,7 +77,6 @@ def handle_response_digits(request):
  
     twilio_request = decompose(request)
     digits = twilio_request.digits
-    # digits = request.POST.get('Digits', '')
 
     twilio_response = Response()
  
@@ -86,7 +86,7 @@ def handle_response_digits(request):
         twilio_response.say('A text message is on its way. Daaaaaaaaaaaaaaamn Daniel! Peace out yo')
         twilio_response.sms('Daaaaaaaaaaaaaaamn Daniel!', to=number)
  
-    if digits == '1':
+    elif digits == '1':
         # twilio_response.play('http://bit.ly/phaltsw')
         # twilio_response.play('https://p.scdn.co/mp3-preview/934da7155ec15deb326635d69d050543ecbee2b4')
         # twilio_response.play('https://p.scdn.co/mp3-preview/934da7155ec15deb326635d69d050543ecbee2b4')
@@ -95,6 +95,11 @@ def handle_response_digits(request):
         # number = request.POST.get('From', '')
         # twilio_response.say('I got you bruh, sending you a text in a bit. PEACE!')
         # twilio_response.sms('You looking lovely today!', to=number)
+
+    # If the caller pressed invalid input
+    else:
+        # twilio_response.say('Incorrect Number Pressed')
+        return redirect("/gather")
  
     return twilio_response
 
