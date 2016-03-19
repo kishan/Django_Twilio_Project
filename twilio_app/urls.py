@@ -11,6 +11,7 @@ urlpatterns = [
 
     url(r'^gather', views.gather_digits, name='gather'),
     url(r'^respond_digits', views.handle_response_digits, name='respond_digits'),
+    url(r'^handle_recording', views.handle_recording, name='handle_recording'),
 
 ]
 

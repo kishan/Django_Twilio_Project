@@ -61,7 +61,7 @@ def ring(request):
 @twilio_view
 def gather_digits(request):
 
-    msg = 'Press one to hear a song, two to receive an SMS.'
+    msg = 'Press one to hear a song, two to receive an SMS, three to record a message.'
 
     twilio_response = Response()
     with twilio_response.gather(action='/respond_digits/', numDigits=1) as g:
@@ -96,10 +96,32 @@ def handle_response_digits(request):
         # twilio_response.say('I got you bruh, sending you a text in a bit. PEACE!')
         # twilio_response.sms('You looking lovely today!', to=number)
 
+    elif digits == "3":
+        twilio_response.say("Record your monkey howl after the tone.")
+        twilio_response.record(maxLength="5", action="/handle_recording")
+
     # If the caller pressed invalid input
     else:
         # twilio_response.say('Incorrect Number Pressed')
         return redirect("/gather")
  
     return twilio_response
+
+@twilio_view
+def handle_recording(request):
+    """Play back the caller's recording."""
+ 
+    twilio_request = decompose(request)
+    # recording_url = twilio_request.RecordingUrl
+    # recording_url = request.values.get("RecordingUrl", None)
+    # recording_url = request.POST.get('RecordingUrl', 'no url')
+    # print recording_url
+    # recording_url = request.values.get("RecordingUrl", None)
+ 
+    twilio_response = Response()
+
+    twilio_response.say("Thanks for howling... take a listen to what you howled.")
+    # twilio_response.play(recording_url)
+    twilio_response.say("Goodbye.")
+    return twilio_request
 
